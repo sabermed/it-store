@@ -1,4 +1,4 @@
-import Main from "./screens/Home";
+import Main from "./src/screens/Main";
 
 export default function App() {
   return (

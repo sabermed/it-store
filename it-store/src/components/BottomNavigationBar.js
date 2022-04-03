@@ -1,11 +1,13 @@
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createBottomTabNavigator, } from '@react-navigation/bottom-tabs';
 import { NavigationContainer } from '@react-navigation/native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
-import DetailsScreen from '../screens/DetailsScreen';
+import ProfileScreen from '../screens/ProfileScreen';
+import CategoryScreen from '../screens/CategoryScreen';
 import SettingsScreen from '../screens/SettingsScreen';
 
 const Tab = createBottomTabNavigator();
+
 
 export default function BottomNavigationBar() {
   return (
@@ -15,6 +17,10 @@ export default function BottomNavigationBar() {
         screenOptions={{
           tabBarActiveTintColor: '#e91e63',
           headerShown: false,
+          tabBarStyle: {
+            height: 60,
+            paddingBottom: 5,
+          },
         }}
       >
         <Tab.Screen
@@ -23,18 +29,28 @@ export default function BottomNavigationBar() {
           options={{
             tabBarLabel: 'Home',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="home" size={size} color={color} />
-              // <MaterialCommunityIcons name="home" color={color} size={size} />
+              <Ionicons name="home-outline" size={size} color={color} />
+            ),
+
+          }}
+        />
+        <Tab.Screen
+          name="Category"
+          component={CategoryScreen}
+          options={{
+            tabBarLabel: 'Category',
+            tabBarIcon: ({ color, size }) => (
+              <Ionicons name="md-grid-outline" size={size} color={color} />
             ),
           }}
         />
         <Tab.Screen
-          name="Details"
-          component={DetailsScreen}
+          name="Profile"
+          component={ProfileScreen}
           options={{
-            tabBarLabel: 'Details',
+            tabBarLabel: 'Profile',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="list" size={size} color={color} />
+              <Ionicons name="md-person-outline" size={size} color={color} />
             ),
             // tabBarBadge: 3,
           }}
@@ -45,7 +61,7 @@ export default function BottomNavigationBar() {
           options={{
             tabBarLabel: 'Settings',
             tabBarIcon: ({ color, size }) => (
-              <Ionicons name="settings" size={size} color={color} />
+              <Ionicons name="settings-outline" size={size} color={color} />
             ),
           }}
         />
