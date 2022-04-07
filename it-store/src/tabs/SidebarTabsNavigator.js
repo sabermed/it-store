@@ -13,7 +13,7 @@ const SidebarTabsNavigator = ({ navigation, descriptors }) => {
   return (
     <View style={{ flex: 1, flexDirection: 'row' }}>
       <View style={{ width: '25%' }}>
-        <ScrollView>
+        <ScrollView showsVerticalScrollIndicator={false} showsHorizontalScrollIndicator={false} >
           <SidebarTabs descriptors={descriptors} navigation={navigation} />
         </ScrollView>
       </View>

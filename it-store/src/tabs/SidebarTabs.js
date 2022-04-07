@@ -9,7 +9,6 @@ const SidebarTabs = ({ navigation, descriptors }) => {
         {routes.map((route, tabIndex) => {
             const { routeName, params } = route;
             const { tabName } = params || {};
-            const color = tabIndex === index ? 'black' : 'white';
             const tabStyle = tabIndex === index ? styles.tabFocused : styles.tab;
 
             return (
@@ -19,7 +18,7 @@ const SidebarTabs = ({ navigation, descriptors }) => {
                     key={route.routeName}
                 >
                     <View style={{ flex: 1, }}>
-                        <Text style={{ color }}>
+                        <Text style={{ color: 'black' }}>
                             {tabName}
                         </Text>
                     </View>
@@ -49,14 +48,14 @@ const styles = StyleSheet.create({
     height: 80,
     width: '100%',
     backgroundColor: 'white',
-    borderLeftColor: 'red',
+    borderLeftColor: '#e91e63',
     borderLeftWidth: 5,
     overflow: 'hidden',
     paddingHorizontal: 20,
   },
   tabContainer: {
     height: '100%',
-    backgroundColor: 'black',
+    backgroundColor: '#f9f9f9',
   },
 });
 
