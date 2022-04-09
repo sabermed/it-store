@@ -1,7 +1,6 @@
 import React from 'react';
 import { ScrollView, View } from 'react-native';
 import { createNavigator, TabRouter } from 'react-navigation';
-
 import SidebarTabs from './SidebarTabs';
 
 const SidebarTabsNavigator = ({ navigation, descriptors }) => {

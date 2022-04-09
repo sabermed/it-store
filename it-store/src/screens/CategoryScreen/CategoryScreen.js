@@ -1,19 +1,20 @@
 import * as React from 'react';
 import { StyleSheet, View } from 'react-native';
-import FBSearchBar from '../components/FBSearchBar';
-import Navigation from '../navigation/NavigationStack';
+import TopNavBar from '../../components/TopNavBar';
+import SibeBarNavigation from './SibeBarNavigation';
 
 export default function CategoryScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <FBSearchBar/>
-            <Navigation />
+            <TopNavBar />
+            <SibeBarNavigation />
         </View>
     );
 }
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white'
     },
 });

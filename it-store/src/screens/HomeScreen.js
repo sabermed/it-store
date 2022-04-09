@@ -1,33 +1,52 @@
-import {useState, useRef} from 'react';
-import { View, Text, ScrollView, StyleSheet, Dimensions, Image, Animated } from 'react-native';
-import Carousel from '../components/Carousel'
-import { dummyData } from '../data/Data'
+import { View, Text, ScrollView, StyleSheet, Dimensions } from 'react-native';
+// import custom components
+import { COLOURS, Items, images } from '../data/Data';
+import ProductCard from '../components/ProductCard';
+import Carousel from '../components/Carousel';
+import TopNavBar from '../components/TopNavBar';
 
-// import Custom components
-import FBSearchBar from '../components/FBSearchBar'
 
 const { width } = Dimensions.get('window');
 const height = width * 0.5;
     
 export default function HomeScreen({ navigation }) {
-    const images = [
-        "https://rukminim1.flixcart.com/flap/3376/560/image/813ce1ebdfb5d14d.jpg?q=50",
-        "https://rukminim1.flixcart.com/flap/1688/280/image/5a55bfde3a5acd85.jpg?q=50",
-        "https://rukminim1.flixcart.com/flap/1688/280/image/b16c5ac856ebb5d9.jpg?q=50"
-    ];
     
     return (
         <View style={styles.container}>
-
-            <FBSearchBar />
-            <View>
+            <TopNavBar navigation={navigation} />
+            <ScrollView showsVerticalScrollIndicator={false}>
                 <Carousel data = {images}/>
-            </View>
-
-            {/* Fake Post list */}
-            <View style={styles.fake_post} />
-            <View style={styles.fake_post} />
-            <View style={styles.fake_post} />
+                <View style={{padding: 16}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                        <Text style={{ fontSize: 16, color: COLOURS.black, fontWeight: '700', letterSpacing: 1, }}>
+                            New Products
+                        </Text>
+                        <Text style={{ fontSize: 14, color: "#333", fontWeight: '400', }}>
+                            View All
+                        </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', }}>
+                        {Items.map(data => {
+                        return <ProductCard navigation={navigation} productItem={data} key={data.id} />;
+                        })}
+                    </View>
+                    {/* Trending Products */}
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                        <Text style={{ fontSize: 16, color: COLOURS.black, fontWeight: '700', letterSpacing: 1, }}>
+                            Trending Products
+                        </Text>
+                        <Text style={{ fontSize: 14, color: "#333", fontWeight: '400', }}>
+                            View All
+                        </Text>
+                    </View>
+                    <View style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'space-between', }}>
+                        {Items.map(data => {
+                        return <ProductCard navigation={navigation} productItem={data} key={data.id} />;
+                        })}
+                    </View>
+                </View>
+            </ScrollView>
+            
         </View>
     );
 }
@@ -35,6 +54,7 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        backgroundColor: 'white'
     },
     carousel: {
         marginTop: 16,
@@ -65,11 +85,5 @@ const styles = StyleSheet.create({
         fontSize: width / 30,
         color: '#fff',
         margin: 3,
-    },
-    fake_post: {
-        backgroundColor: '#e4e6eb',
-        height: 200,
-        margin: 16,
-        borderRadius: 16,
     },
 })

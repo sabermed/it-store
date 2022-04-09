@@ -9,38 +9,43 @@ function infiniteScroll(dataList, _flatlist) {
     const numberOfData = dataList.length;
     let scrollValue = 0, scrolled = 0;
     if (_flatlist !== null) {
-        setInterval(function () {
-            scrolled++
-            if (scrolled <= numberOfData) {
-                scrollValue = scrollValue + width;
-            } else {
-                scrollValue = 0;
-                scrolled = 0;
-            }
-            _flatlist.current.scrollToOffset({ animated: true, offset: scrollValue });
-        }, 3000);
+        try {
+            setInterval(function () {
+                scrolled++
+                if (scrolled <= numberOfData) {
+                    scrollValue = scrollValue + width;
+                } else {
+                    scrollValue = 0;
+                    scrolled = 0;
+                }
+                _flatlist.current.scrollToOffset({ animated: true, offset: scrollValue });
+            }, 3000);
+        } catch (e) {
+            console.log('something went wrong');
+        }
     }
 }
 
 // carousel main function
 const Carousel = ({ data }) => {
-    let _flatlist = useRef(null);
-    const scrollX = new Animated.Value(0);
+    let _flatlist = useRef();
+    let scrollX = new Animated.Value(0);
     let position = Animated.divide(scrollX, width);
 
     useEffect(()=> {
-        infiniteScroll(data, _flatlist);
+        // infiniteScroll(data, _flatlist);
     })
 
     if (data && data.length) {
         return (
             <View>
-                <FlatList data={data}
+                <Animated.FlatList data={data}
                     ref = {_flatlist}
                     keyExtractor={(item, index) => 'key' + index}
                     horizontal
                     pagingEnabled
                     scrollEnabled
+                    contentContainerStyle={{}}
                     snapToAlignment="center"
                     scrollEventThrottle={16}
                     decelerationRate={"fast"}
@@ -52,7 +57,7 @@ const Carousel = ({ data }) => {
                         [
                             {nativeEvent: {contentOffset: { x: scrollX }}}
                         ],
-                        { useNativeDriver: false }
+                        { useNativeDriver: true }
                     )}
                 />
                 {/* **********************  block dot view  *****************************  */}
@@ -86,7 +91,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignSelf: 'center',
         position: 'absolute',
-        bottom: 0,
+        bottom: 10,
     }
 })
 

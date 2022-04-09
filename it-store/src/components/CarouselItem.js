@@ -15,15 +15,18 @@ const CarouselItem = ({ item }) => {
 const styles = StyleSheet.create({
     cardView: {
         flex: 1,
-        width: width,
-        height: height / 3.5,
+        width: width-20,
+        height: 150,
         backgroundColor: 'white',
-        marginTop: 10,
+        margin: 10,
+        borderRadius: 10,
     },
 
     image: {
-        width: width,
-        height: height / 3.5,
+        width: '100%',
+        height: '100%',
+        resizeMode: 'cover',
+        borderRadius: 10,
     },
 });
 
