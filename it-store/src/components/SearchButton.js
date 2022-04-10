@@ -3,36 +3,29 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
-const SearchBarButton = ({ navigation }) => {
+const SearchButton = ({ navigation }) => {
   return (
-    <View style={styles.container}>
-      <Pressable style={styles.button}  onPress={() => { navigation.navigate('SearchScreen') }}>
-        <Text style={styles.textInput} >Seach here</Text>
+    <Pressable style={styles.button}  onPress={() => { navigation.navigate('SearchScreen') }}>
+        <Text style={styles.textInput} >Search here</Text>
         <View style={styles.search_icon_box} >
           <Ionicons name="search" size={22} color={"#ffffff"} style={styles.iconButton} />
         </View>
       </Pressable>
-    </View>
   )
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignSelf: "center",
-    alignItems: "center",
-    backgroundColor: 'transparent',
-    borderRadius: 50,
-    borderColor: "red",
-    borderWidth: 2,
-  },
   button: {
+    flex: 1,
     flexDirection: 'row',
     alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: "#fff",
-    width: "100%",
     borderRadius: 50,
+    borderColor: "red",
+    borderWidth: 2,
+    width: "100%",
+    maxHeight: 38,
   },
   textInput: {
     paddingHorizontal: 10,
@@ -50,4 +43,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchBarButton
+export default SearchButton

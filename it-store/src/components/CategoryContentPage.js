@@ -6,16 +6,7 @@ export default function CategoryContentPage({ navigation }) {
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
-                <View
-                    style={{ padding: 16, }}>
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                        <Text style={{ fontSize: 18, color: COLOURS.black, fontWeight: '700', letterSpacing: 1, }}>
-                            Products
-                        </Text>
-                        <Text style={{ fontSize: 14, color: COLOURS.blue, fontWeight: '700', }}>
-                            VIEW ALL
-                        </Text>
-                    </View>
+                <View style={{ padding: 16, }}>
                     <View
                         style={{
                         flexDirection: 'row',
@@ -34,7 +25,7 @@ export default function CategoryContentPage({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white',
+        backgroundColor: '#f2eff0',
         alignItems: 'center',
         justifyContent: 'center',
     },

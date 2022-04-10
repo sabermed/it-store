@@ -18,10 +18,10 @@ export default function HomeScreen({ navigation }) {
                 <Carousel data = {images}/>
                 <View style={{padding: 16}}>
                     <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                        <Text style={{ fontSize: 16, color: COLOURS.black, fontWeight: '700', letterSpacing: 1, }}>
+                        <Text style={{ fontSize: 22, color: "#000", fontWeight: '700', }}>
                             New Products
                         </Text>
-                        <Text style={{ fontSize: 14, color: "#333", fontWeight: '400', }}>
+                        <Text style={{ fontSize: 16, color: "red", fontWeight: '400',}}>
                             View All
                         </Text>
                     </View>
@@ -31,11 +31,11 @@ export default function HomeScreen({ navigation }) {
                         })}
                     </View>
                     {/* Trending Products */}
-                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
-                        <Text style={{ fontSize: 16, color: COLOURS.black, fontWeight: '700', letterSpacing: 1, }}>
+                    <View style={{ marginTop: 32, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                        <Text style={{ fontSize: 22, color: "#000", fontWeight: '700',}}>
                             Trending Products
                         </Text>
-                        <Text style={{ fontSize: 14, color: "#333", fontWeight: '400', }}>
+                        <Text style={{ fontSize: 16, color: "red", fontWeight: '400', }}>
                             View All
                         </Text>
                     </View>
@@ -54,36 +54,6 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
-    },
-    carousel: {
-        marginTop: 16,
-        width,
-        height,
-    },
-    scroll: {
-        width,
-        height,
-    },
-    image: {
-        width,
-        height,
-        resizeMode: 'cover',
-    },
-    pagination: {
-        flexDirection: 'row',
-        position: 'absolute',
-        bottom: 0,
-        alignSelf: 'center',
-    },
-    pagingText: {
-        fontSize: width / 30,
-        color: '#888',
-        margin: 3,
-    },
-    pagingActiveText: {
-        fontSize: width / 30,
-        color: '#fff',
-        margin: 3,
+        backgroundColor: '#f2eff0'
     },
 })

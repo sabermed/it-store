@@ -18,7 +18,7 @@ const SidebarTabs = ({ navigation, descriptors }) => {
                     key={route.routeName}
                 >
                     <View style={{ flex: 1, }}>
-                        <Text style={{ color: 'black' }}>
+                        <Text style={{ color: 'black', textAlign: "center", }}>
                             {tabName}
                         </Text>
                     </View>
@@ -39,7 +39,6 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'transparent',
     overflow: 'hidden',
-    paddingHorizontal: 20,
   },
   tabFocused: {
     flexDirection: 'row',
@@ -47,15 +46,15 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 80,
     width: '100%',
-    backgroundColor: 'white',
-    borderLeftColor: '#e91e63',
+    backgroundColor: '#f2eff0',
+    borderLeftColor: 'black',
     borderLeftWidth: 5,
     overflow: 'hidden',
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
   },
   tabContainer: {
     height: '100%',
-    backgroundColor: '#f9f9f9',
+    backgroundColor: '#ffffff',
   },
 });
 

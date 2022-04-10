@@ -39,7 +39,7 @@ export const Items = [
         description:
         'boAt Rockerz 450 M is an on-ear wireless headset that has been ergonomically designed to meet the needs of music lovers.',
         isOff: true,
-        offPercentage: 10,
+        offPercentage: 25,
         productImage: "https://raw.githubusercontent.com/jaydipvidhate/shopping-app-react-native/main/components/database/images/products/Mi1.png",
         isAvailable: true,
         productImageList: [
@@ -55,10 +55,9 @@ export const Items = [
         productPrice: 1999,
         description:
         'Bluetooth: It has Bluetooth v5.0 with a range of 10m and is compatible with Android & iOS',
-        isOff: true,
-        offPercentage: 18,
+        isOff: false,
         productImage: "https://raw.githubusercontent.com/jaydipvidhate/shopping-app-react-native/main/components/database/images/products/Mi1.png",
-        isAvailable: false,
+        isAvailable: true,
         productImageList: [
         "https://rukminim1.flixcart.com/flap/3376/560/image/813ce1ebdfb5d14d.jpg?q=50",
         "https://rukminim1.flixcart.com/flap/1688/280/image/5a55bfde3a5acd85.jpg?q=50",
@@ -74,7 +73,7 @@ export const Items = [
         'Fly into your workouts with precise tones that inspire and energize your system with its HD sound, all the time.',
         isOff: false,
         productImage: "https://raw.githubusercontent.com/jaydipvidhate/shopping-app-react-native/main/components/database/images/products/Mi1.png",
-        isAvailable: true,
+        isAvailable: false,
         productImageList: [
         "https://rukminim1.flixcart.com/flap/3376/560/image/813ce1ebdfb5d14d.jpg?q=50",
         "https://rukminim1.flixcart.com/flap/1688/280/image/5a55bfde3a5acd85.jpg?q=50",

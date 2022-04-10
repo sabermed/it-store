@@ -7,7 +7,7 @@ export default function CategoryScreen({ navigation }) {
 
     return (
         <View style={styles.container}>
-            <TopNavBar />
+            <TopNavBar navigation={navigation} />
             <SibeBarNavigation />
         </View>
     );
@@ -15,6 +15,6 @@ export default function CategoryScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: 'white'
+        backgroundColor: '#f2eff0'
     },
 });

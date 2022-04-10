@@ -1,12 +1,19 @@
 import React from 'react';
 import { View, Text, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import SearchButton from './SearchButton';
+import SearchInput from './SearchInput';
 
-const TopNavBar = ({navigation}) => {
+const BackSearchNavBar = ({navigation}) => {
   return (
     <View style={styles.container}>
-      <SearchButton navigation={navigation} />
+      <Ionicons
+        onPress={() => { navigation.navigate('BottomNavigationBar') }}
+        style={{ padding: 5, marginRight: 10 }}
+        name="arrow-back-outline"
+        size={26}
+        color={"#000"}
+      />
+      <SearchInput navigation={navigation} />
       <Ionicons
         onPress={() => { navigation.navigate('CartScreen') }}
         style={{ marginHorizontal: 10 }}
@@ -22,8 +29,9 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     justifyContent: "space-between",
-    padding: 10,
+    alignItems: "center",
+    padding: 10
   },
 });
 
-export default TopNavBar
+export default BackSearchNavBar
