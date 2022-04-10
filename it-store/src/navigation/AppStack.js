@@ -1,7 +1,7 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
 import HomeScreen from '../screens/HomeScreen';
-import CategoryScreen from '../screens/CategoryScreen/CategoryScreen';
+import CategoryScreen from '../screens/CategoryScreen';
 import DetailsScreen from '../screens/DetailsScreen';
 import SearchScreen from '../screens/SearchScreen';
 import CartScreen from '../screens/CartScreen';
@@ -18,7 +18,6 @@ const AppStack = () =>{
             <Stack.Screen name='BottomNavigationBar' component={BottomNavigationBar} />
             <Stack.Screen name="Home" component={HomeScreen} />
             <Stack.Screen name="Category" component={CategoryScreen} />
-            <Stack.Screen name="CategoryContent" component={CategoryContentPage} />
             <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
             <Stack.Screen name="CartScreen" component={CartScreen} />

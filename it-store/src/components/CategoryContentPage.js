@@ -2,7 +2,8 @@ import { StyleSheet, View, Text, ScrollView } from 'react-native';
 import { COLOURS, Items } from '../data/Data';
 import ProductCard from '../components/ProductCard'
 
-export default function CategoryContentPage({ navigation }) {
+export default function CategoryContentPage({ navigation, category }) {
+    console.log(category);
     return (
         <View style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
