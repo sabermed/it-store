@@ -7,8 +7,8 @@ import SearchScreen from '../screens/SearchScreen';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import SettingsScreen from '../screens/SettingsScreen';
+import SearchResults from '../screens/SearchResults';
 import BottomNavigationBar from './BottomNavigationBar';
-import CategoryContentPage from '../components/CategoryContentPage';
 
 const Stack = createStackNavigator();
 
@@ -20,6 +20,7 @@ const AppStack = () =>{
             <Stack.Screen name="Category" component={CategoryScreen} />
             <Stack.Screen name="DetailsScreen" component={DetailsScreen} />
             <Stack.Screen name="SearchScreen" component={SearchScreen} />
+            <Stack.Screen name="SearchResults" component={SearchResults} />
             <Stack.Screen name="CartScreen" component={CartScreen} />
             <Stack.Screen name="Profile" component={ProfileScreen} />
             <Stack.Screen name="Settings" component={SettingsScreen} />

@@ -18,7 +18,7 @@ export default function SearchScreen({ navigation }) {
         "PC Portable HP Notebook 12 16GO RAM",
         "kit-oreille samsung bluetooth",
         "Charge Samsung 5V",
-        "Ordinateur bureau Dell i3 7th géndffffffffffffffffffffffffffffffffffff",
+        "Ordinateur bureau Dell i3 7th gén",
         "Casque bluetooth"
     ]
 

@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text,TextInput, StyleSheet } from 'react-native';
+import { View, Pressable,TextInput, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 
@@ -7,9 +7,9 @@ const SearchInput = ({ navigation }) => {
   return (
     <View style={styles.button}>
         <TextInput style={styles.textInput} placeholder={"Search here"} />
-        <View style={styles.search_icon_box} >
+        <Pressable style={styles.search_icon_box} onPress={()=>{navigation.navigate("SearchResults")}}>
             <Ionicons name="search" size={22} color={"#ffffff"} style={styles.iconButton} />
-        </View>
+        </Pressable>
     </View>
   )
 }
@@ -28,8 +28,10 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   textInput: {
+    flex: 1,
     paddingHorizontal: 10,
-    color: "#777"
+    color: "#777",
+    justifyContent: "center",
   },
   search_icon_box: {
     width: 50,

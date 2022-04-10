@@ -61,7 +61,7 @@ export default function BottomNavigationBar() {
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="settings-outline" size={size} color={color} />
           ),
-          tabBarBadge: 3,
+          // tabBarBadge: 3,
         }}
       />
     </Tab.Navigator>

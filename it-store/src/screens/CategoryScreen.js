@@ -1,25 +1,15 @@
 import {useState} from 'react';
-import { StyleSheet, View, Text, ScrollView, TouchableOpacity } from 'react-native';
+import { StyleSheet, View, Text, ScrollView, Pressable } from 'react-native';
 import TopNavBar from '../components/TopNavBar';
-import CategoryContentPage from '../components/CategoryContentPage';;
+import CategoryContentPage from '../components/CategoryContentPage';
+import { _categoryTabs } from '../data/Data';
 
 export default function CategoryScreen({ navigation }) {
 
-    const _categoryTabs = [
-        'Smartphones',
-        'Télephone Fixe & Fax',
-        'Tablette',
-        'Téléphones basique',
-        'Accessoires Téléphoniques',
-        'Accessoires informatiques',
-        'PC Portable',
-        'PC Bureau',
-        'Ordinateurs et imprimantes',
-    ]
     const [selectedCategory, setSelectCategory] = useState(0);
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#f2eff0', }}>
+        <View style={{ flex: 1, backgroundColor: '#f7f7f7', }}>
             <TopNavBar navigation={navigation} />
             <View style={{ flex: 1, flexDirection: 'row' }}>
                 <View style={{ width: '23%' }}>
@@ -27,7 +17,7 @@ export default function CategoryScreen({ navigation }) {
                         <View style={styles.tabContainer}>
                             {_categoryTabs.map((item, index) => {
                                 return (
-                                    <TouchableOpacity
+                                    <Pressable
                                         key={index}
                                         onPress={() => { setSelectCategory(index) }}
                                         style={selectedCategory === index ? styles.tabFocused : styles.tab}
@@ -37,7 +27,7 @@ export default function CategoryScreen({ navigation }) {
                                                 {item}
                                             </Text>
                                         </View>
-                                    </TouchableOpacity>
+                                    </Pressable>
                                 )
                             })
                             }
@@ -66,6 +56,8 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'transparent',
     overflow: 'hidden',
+    borderBottomColor: '#f7f7f7',
+    borderBottomWidth: 2,
   },
   tabFocused: {
     flexDirection: 'row',
@@ -73,10 +65,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 90,
     width: '100%',
-    backgroundColor: '#f2eff0',
+    backgroundColor: '#f7f7f7',
     borderLeftColor: 'black',
     borderLeftWidth: 5,
     overflow: 'hidden',
+    borderBottomColor: '#f7f7f7',
+    borderBottomWidth: 2,
   },
   tabContainer: {
     height: '100%',

@@ -13,6 +13,19 @@ export const COLOURS = {
     backgroundMedium: '#B9B9B9',
     backgroundDark: '#777777',
 };
+
+export const _categoryTabs = [
+    'Smartphones',
+    'Téléphone Fixe & Fax',
+    'Tablette',
+    'Téléphones basique',
+    'Accessoires Téléphoniques',
+    'Accessoires informatiques',
+    'PC Portable',
+    'PC Bureau',
+    'Ordinateurs et imprimantes',
+]
+
 export const Items = [
     {
         id: 1,
