@@ -9,7 +9,7 @@ export default function CategoryScreen({ navigation }) {
     const [selectedCategory, setSelectCategory] = useState(0);
 
     return (
-        <View style={{ flex: 1, backgroundColor: '#f7f7f7', }}>
+        <View style={{ flex: 1, backgroundColor: '#e9e9e9', }}>
             <TopNavBar navigation={navigation} />
             <View style={{ flex: 1, flexDirection: 'row' }}>
                 <View style={{ width: '23%' }}>
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     width: '100%',
     backgroundColor: 'transparent',
     overflow: 'hidden',
-    borderBottomColor: '#f7f7f7',
+    borderBottomColor: '#e9e9e9',
     borderBottomWidth: 2,
   },
   tabFocused: {
@@ -65,11 +65,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: 90,
     width: '100%',
-    backgroundColor: '#f7f7f7',
+    backgroundColor: '#e9e9e9',
     borderLeftColor: 'black',
     borderLeftWidth: 5,
     overflow: 'hidden',
-    borderBottomColor: '#f7f7f7',
+    borderBottomColor: '#e9e9e9',
     borderBottomWidth: 2,
   },
   tabContainer: {

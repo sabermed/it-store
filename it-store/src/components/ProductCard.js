@@ -7,9 +7,9 @@ const ProductCard = ({ navigation, productItem, isCategory }) => {
     <Pressable
       onPress={() => navigation.navigate('DetailsScreen')}
       style={{
-        width: "48.5%",
+        width: "49%",
         backgroundColor: "#fff",
-        marginVertical: 6,
+        marginVertical: 4,
         borderRadius: 8,
       }}>
       <View
@@ -17,7 +17,7 @@ const ProductCard = ({ navigation, productItem, isCategory }) => {
           width: '100%',
           height: isCategory ? width / 2.5 : width / 1.8,
           borderRadius: 8,
-          backgroundColor: '#ebebed',
+          backgroundColor: '#f2f2f2',
           position: 'relative',
           justifyContent: 'center',
           alignItems: 'center',
@@ -38,7 +38,7 @@ const ProductCard = ({ navigation, productItem, isCategory }) => {
               right: 2,
               padding: 4,
               marginHorizontal: 4,
-              backgroundColor: '#f2f7f2',
+              backgroundColor: '#f9eee2',
               borderRadius: 3,
               alignItems: 'center',
               justifyContent: 'center',

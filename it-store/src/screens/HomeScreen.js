@@ -17,7 +17,7 @@ export default function HomeScreen({ navigation }) {
             <ScrollView showsVerticalScrollIndicator={false}>
                 <Carousel data = {images}/>
                 <View style={{padding: 16}}>
-                    <View style={{ marginVertical: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', }}>
                         <Text style={{ fontSize: 24, color: "#000", fontWeight: '700', }}>
                             New Products
                         </Text>
@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
                         })}
                     </View>
                     {/* Trending Products */}
-                    <View style={{ marginTop: 36, marginBottom: 8, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
+                    <View style={{ marginTop: 36, marginBottom: 5, flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 24, color: "#000", fontWeight: '700',}}>
                             Trending Products
                         </Text>
@@ -54,6 +54,6 @@ export default function HomeScreen({ navigation }) {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#f7f7f7'
+        backgroundColor: '#e9e9e9'
     },
 })
