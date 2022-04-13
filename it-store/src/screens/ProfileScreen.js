@@ -5,7 +5,7 @@ export default function ProfileScreen({ navigation }) {
     return (
         <View style={{ flex: 1, backgroundColor: 'white', alignItems: 'center', justifyContent: 'center' }}>
             <Text
-                onPress={() => navigation.navigate('Home')}
+                onPress={() => navigation.navigate('LoginScreen')}
                 style={{ fontSize: 26, fontWeight: 'bold' }}>Profile Screen</Text>
         </View>
     );

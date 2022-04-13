@@ -5,7 +5,8 @@ const ProductCard = ({ navigation, productItem, isCategory }) => {
   
   return (
     <Pressable
-      onPress={() => navigation.navigate('DetailsScreen')}
+      key={productItem.id}
+      onPress={() => navigation.navigate('ProductInfo', {productID: productItem.id})}
       style={{
         width: "49%",
         backgroundColor: "#fff",
@@ -43,7 +44,7 @@ const ProductCard = ({ navigation, productItem, isCategory }) => {
               alignItems: 'center',
               justifyContent: 'center',
           }}>
-            <Text style={{ fontSize: 14, fontWeight: "700", color: '#e3571a', }}>
+            <Text style={{ fontSize: 16, fontWeight: "700", color: '#e3571a', }}>
               -{productItem.offPercentage}%
             </Text>
           </View>
