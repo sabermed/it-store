@@ -28,7 +28,8 @@ const ProductCard = ({ navigation, productItem, isCategory }) => {
           style={{
             width: '100%',
             height: '100%',
-            resizeMode: 'contain',
+            borderRadius: 10,
+            resizeMode: 'cover',
           }}
         />
         {productItem.isOff ? (

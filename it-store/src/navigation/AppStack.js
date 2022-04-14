@@ -6,7 +6,7 @@ import ProductInfo from '../screens/ProductInfo';
 import SearchScreen from '../screens/SearchScreen';
 import CartScreen from '../screens/CartScreen';
 import ProfileScreen from '../screens/ProfileScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import HelpScreen from '../screens/HelpScreen';
 import SearchResults from '../screens/SearchResults';
 import BottomNavigationBar from './BottomNavigationBar';
 import LoginScreen from '../screens/LoginScreen';

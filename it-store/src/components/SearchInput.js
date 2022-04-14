@@ -1,14 +1,17 @@
 import React from 'react';
 import { View, Pressable,TextInput, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-
+import { LinearGradient } from 'expo-linear-gradient';
 
 const SearchInput = ({ navigation }) => {
   return (
     <View style={styles.button}>
         <TextInput style={styles.textInput} placeholder={"Search here"} />
-        <Pressable style={styles.search_icon_box} onPress={()=>{navigation.navigate("SearchResults")}}>
-            <Ionicons name="search" size={22} color={"#ffffff"} style={styles.iconButton} />
+        <Pressable onPress={()=>{navigation.navigate("SearchResults")}}>
+            <LinearGradient colors={["#f3607b", "#fc8783"]} style={styles.search_icon_box} >
+
+          <Ionicons name="search" size={22} color={"#ffffff"} style={styles.iconButton} />
+        </LinearGradient>
         </Pressable>
     </View>
   )
@@ -38,7 +41,7 @@ const styles = StyleSheet.create({
     height: 30,
     margin: 2,
     borderRadius: 50,
-    backgroundColor: 'red',
+    // backgroundColor: 'red',
     flexDirection: 'row',
     justifyContent: 'center',
     alignItems: 'center',

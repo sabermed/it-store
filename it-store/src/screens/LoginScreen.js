@@ -46,8 +46,10 @@ const LoginScreen = ({ navigation }) => {
     
     if (res.status == 200 && res.data.accessToken != "") {
       await SecureStore.setItemAsync('userToken', res.data.accessToken);
+      await SecureStore.setItemAsync('username', res.data.username);
       let result = await SecureStore.getItemAsync('userToken');
-      console.log(result)
+      let result2 = await SecureStore.getItemAsync('username');
+      console.log(result,result2)
       navigation.navigate("Home")
       
     } else if(res.status == 403){

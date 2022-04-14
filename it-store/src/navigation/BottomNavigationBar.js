@@ -4,7 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import HomeScreen from '../screens/HomeScreen';
 import ProfileScreen from '../screens/ProfileScreen';
 import CategoryScreen from '../screens/CategoryScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+import HelpScreen from '../screens/HelpScreen';
 
 const Tab = createBottomTabNavigator();
 
@@ -54,12 +54,12 @@ export default function BottomNavigationBar() {
         }}
       />
       <Tab.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="Help"
+        component={HelpScreen}
         options={{
-          tabBarLabel: 'Settings',
+          tabBarLabel: 'Help',
           tabBarIcon: ({ color, size }) => (
-            <Ionicons name="settings-outline" size={size} color={color} />
+            <Ionicons name="help-circle-outline" size={size} color={color} />
           ),
           // tabBarBadge: 3,
         }}

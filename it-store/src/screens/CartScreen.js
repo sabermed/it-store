@@ -8,7 +8,8 @@ import {
   ToastAndroid,
 } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {COLOURS, Items} from '../data/Data';
+import { COLOURS, Items } from '../data/Data';
+import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 export default function CartScreen({ navigation }) {
@@ -93,7 +94,6 @@ const renderProducts = (data, index) => {
         style={{
           width: '30%',
           height: 100,
-          padding: 14,
           justifyContent: 'center',
           alignItems: 'center',
           backgroundColor: COLOURS.backgroundLight,
@@ -101,11 +101,12 @@ const renderProducts = (data, index) => {
           marginRight: 22,
         }}>
         <Image
-          source={data.productImage}
+          source={{ uri: data.productImage }}
           style={{
             width: '100%',
             height: '100%',
-            resizeMode: 'contain',
+            resizeMode: 'cover',
+            borderRadius: 10,
           }}
         />
       </View>
@@ -246,11 +247,11 @@ return (
           </TouchableOpacity>
           <Text
             style={{
-              fontSize: 14,
+              fontSize: 22,
               color: COLOURS.black,
-              fontWeight: '400',
+              fontWeight: '700',
             }}>
-            Order Details
+            Orders details
           </Text>
 
           <View></View>
@@ -266,7 +267,7 @@ return (
             letterSpacing: 1,
             paddingTop: 20,
             paddingLeft: 16,
-            marginBottom: 10,
+            marginVertical: 16,
           }}>
           My Cart
         </Text>
@@ -529,28 +530,39 @@ return (
           width: '100%',
           justifyContent: 'center',
           alignItems: 'center',
-        }}>
+      }}>
+      
         <TouchableOpacity
           onPress={() => (total != 0 ? checkOut() : null)}
           style={{
             width: '86%',
             height: '90%',
-            backgroundColor: COLOURS.blue,
+            // backgroundColor: COLOURS.blue,
             borderRadius: 20,
             justifyContent: 'center',
             alignItems: 'center',
-          }}>
-          <Text
-            style={{
-              fontSize: 12,
-              fontWeight: '500',
-              letterSpacing: 1,
-              color: COLOURS.white,
-              textTransform: 'uppercase',
-            }}>
-            CHECKOUT ({total + total / 20} TND)
-          </Text>
+        }}>
+            <LinearGradient colors={["#f3607b", "#fc8783"]} style={{
+            width: '86%',
+            height: '90%',
+            // backgroundColor: COLOURS.blue,
+            borderRadius: 20,
+            justifyContent: 'center',
+            alignItems: 'center',
+        }}>
+              <Text
+                style={{
+                  fontSize: 12,
+                  fontWeight: '500',
+                  letterSpacing: 1,
+                  color: COLOURS.white,
+                  textTransform: 'uppercase',
+                }}>
+                CHECKOUT ({total + total / 20} TND)
+              </Text>
+            </LinearGradient>
           </TouchableOpacity>
+        
       </View>
     </View>
   );
