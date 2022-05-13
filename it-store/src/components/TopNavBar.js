@@ -21,6 +21,7 @@ const TopNavBar = ({navigation}) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    alignItems: 'center',
     justifyContent: "space-between",
     padding: 10,
   },

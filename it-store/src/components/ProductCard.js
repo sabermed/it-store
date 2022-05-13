@@ -5,8 +5,8 @@ const ProductCard = ({ navigation, productItem, isCategory }) => {
   
   return (
     <Pressable
-      key={productItem.id}
-      onPress={() => navigation.navigate('ProductInfo', {productID: productItem.id})}
+      key={productItem._id}
+      onPress={() => navigation.navigate('ProductInfo', {productID: productItem._id})}
       style={{
         width: "49%",
         backgroundColor: "#fff",

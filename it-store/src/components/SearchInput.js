@@ -1,15 +1,16 @@
-import React from 'react';
+import {useState} from 'react';
 import { View, Pressable,TextInput, StyleSheet } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from 'expo-linear-gradient';
 
 const SearchInput = ({ navigation }) => {
+  const [word, setWord] = useState('');
+
   return (
     <View style={styles.button}>
-        <TextInput style={styles.textInput} placeholder={"Search here"} />
-        <Pressable onPress={()=>{navigation.navigate("SearchResults")}}>
+        <TextInput style={styles.textInput} placeholder={"Search here"} onChangeText={newWord => setWord(newWord)} />
+        <Pressable onPress={()=>{navigation.navigate("SearchResults", {word: word})}}>
             <LinearGradient colors={["#f3607b", "#fc8783"]} style={styles.search_icon_box} >
-
           <Ionicons name="search" size={22} color={"#ffffff"} style={styles.iconButton} />
         </LinearGradient>
         </Pressable>

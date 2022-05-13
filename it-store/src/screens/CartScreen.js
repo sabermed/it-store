@@ -7,233 +7,249 @@ import {
   Image,
   ToastAndroid,
 } from 'react-native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
-import { COLOURS, Items } from '../data/Data';
+import Entypo from 'react-native-vector-icons/Entypo';
+import { COLOURS } from '../data/Data';
 import { LinearGradient } from 'expo-linear-gradient';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
+import axios from 'axios';
 
 export default function CartScreen({ navigation }) {
-const [product, setProduct] = useState();
-const [total, setTotal] = useState(null);
- 
-useEffect(() => {
-  getDataFromDB();  
-  }, []);
+  const [items, setItems] = useState();
+  const [total, setTotal] = useState(0);
+  const [subTotal, setSubTotal] = useState(0);
+  const shippingTax = 10.00;
+  const userId = "6256f385041ec88105adc2fb";
 
-
- //get data from local DB by ID
- const getDataFromDB = async () => {
-    let productData = [];
-    // if (items) {
-      Items.forEach(data => {
-          productData.push(data);
-      });
-      setProduct(productData);
-      getTotal(productData);
-    // } else {
-    //   setProduct(false);
-    //   getTotal(false);
-    // }
+  //get data from local DB by ID
+  const getDataFromDB = async () => {
+    axios.get(`http://192.168.1.14:9000/api/carts/find/${userId}`).then(function (res) {
+      let dt = [];
+      if (res.status == 200) {
+        res.data.map((item, index) => {
+          item.products.map((elem, i) => {
+            dt.push(elem);
+          })
+        })
+        setItems(dt);
+        getTotal(dt);
+      } else {
+        return console.log("error" + res);
+      }
+    }).catch(function (error) {
+      console.log(error);
+    });
   };
-//get total price of all items in the cart
-  const getTotal = productData => {
+
+  //get total price of all items in the cart
+  const getTotal = (productData) => {
     let total = 0;
     for (let index = 0; index < productData.length; index++) {
       let productPrice = productData[index].productPrice;
       total = total + productPrice;
     }
-    setTotal(total);
+    setSubTotal(total);
+    setTotal(total + shippingTax);
   };
 
- //remove data from Cart
-
- const removeItemFromCart = async id => {
-  let itemArray = await AsyncStorage.getItem('cartItems');
-  itemArray = JSON.parse(itemArray);
-  if (itemArray) {
-    let array = itemArray;
-    for (let index = 0; index < array.length; index++) {
-      if (array[index] == id) {
-        array.splice(index, 1);
+  //change Quantity
+  const changeQte = async (data, qteAction) => {
+    axios.post(
+      `http://192.168.1.14:9000/api/carts/createUpdate/${userId}`,
+      {
+        productId: data.productId,
+        qteAction: qteAction,
       }
+    ).then(function (res) {
+      if (res.status == 200) {
+        getDataFromDB();
+      } else {
+        return console.log("error" + res);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  };
 
-      await AsyncStorage.setItem('cartItems', JSON.stringify(array));
-      getDataFromDB();
-    }
-  }
-};
+  //remove item from Cart
+  const removeItemFromCart = async (id) => {
+    const userId = "6256f385041ec88105adc2fb";
+    axios.post(`http://192.168.1.14:9000/api/carts/delete/${userId}`, { productId: id }).then(function (res) {
+      if (res.status == 200) {
+        getDataFromDB();
+      } else {
+        return console.log("error" + res);
+      }
+    }).catch(function (error) {
+      console.log(error);
+    });
+  };
 
+  //checkout
+  const checkOut = async () => {
+    //remove item from cart then
+    ToastAndroid.show('item will be Deliverd SOON!', ToastAndroid.SHORT);
+    navigation.navigate('Home');
+  };
 
- //checkout
-
- const checkOut = async () => {
-  try {
-    await AsyncStorage.removeItem('cartItems');
-  } catch (error) {
-    return error;
-  }
-
-  ToastAndroid.show('Items will be Deliverd SOON!', ToastAndroid.SHORT);
-
-  navigation.navigate('Home');
-};
-
-const renderProducts = (data, index) => {
-  return (
-    <TouchableOpacity
-      key={data.id}
-      onPress={() => navigation.navigate('ProductInfo', {productID: data.id})}
-      style={{
-        width: '100%',
-        height: 100,
-        marginVertical: 6,
-        flexDirection: 'row',
-        alignItems: 'center',
-      }}>
+  // render cart items
+  const renderProducts = (data, index) => {
+    return (
       <View
+        key={data._id}
         style={{
-          width: '30%',
+          width: '100%',
           height: 100,
-          justifyContent: 'center',
+          marginVertical: 6,
+          flexDirection: 'row',
           alignItems: 'center',
-          backgroundColor: COLOURS.backgroundLight,
-          borderRadius: 10,
-          marginRight: 22,
         }}>
-        <Image
-          source={{ uri: data.productImage }}
+        <TouchableOpacity
+          onPress={() => navigation.navigate('ProductInfo', {productID: data.productId})}
           style={{
-            width: '100%',
-            height: '100%',
-            resizeMode: 'cover',
+            width: '30%',
+            height: 100,
+            justifyContent: 'center',
+            alignItems: 'center',
+            backgroundColor: COLOURS.backgroundLight,
             borderRadius: 10,
-          }}
-        />
-      </View>
-      <View
-        style={{
-          flex: 1,
-          height: '100%',
-          justifyContent: 'space-around',
-        }}>
-        <View style={{}}>
-          <Text
+            marginRight: 22,
+          }}>
+          <Image 
+            source={{ uri: data.productImage }}
             style={{
-              fontSize: 14,
-              maxWidth: '100%',
-              color: COLOURS.black,
-              fontWeight: '600',
-              letterSpacing: 1,
-            }}>
-            {data.productName}
-          </Text>
-          <View
-            style={{
-              marginTop: 4,
-              flexDirection: 'row',
-              alignItems: 'center',
-              opacity: 0.6,
-            }}>
+              width: '100%',
+              height: '100%',
+              resizeMode: 'cover',
+              borderRadius: 10,
+            }}
+          />
+        </TouchableOpacity>
+        <View
+          style={{
+            flex: 1,
+            height: '100%',
+            justifyContent: 'space-around',
+          }}>
+          <View style={{}}>
             <Text
               style={{
                 fontSize: 14,
-                fontWeight: '400',
-                maxWidth: '85%',
-                marginRight: 4,
+                maxWidth: '100%',
+                color: COLOURS.black,
+                fontWeight: '600',
+                letterSpacing: 1,
               }}>
-              &#8377;{data.productPrice}
+              {data.productName}
             </Text>
-            <Text>
-              (~&#8377;
-              {data.productPrice + data.productPrice / 20})
-            </Text>
+            <View
+              style={{
+                marginTop: 4,
+                flexDirection: 'row',
+                alignItems: 'center',
+                opacity: 0.6,
+              }}>
+              <Text
+                style={{
+                  fontSize: 14,
+                  fontWeight: '400',
+                  maxWidth: '85%',
+                  marginRight: 4,
+                }}>
+                {data.productPrice} TND
+              </Text>
+            </View>
           </View>
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
           <View
             style={{
               flexDirection: 'row',
+              justifyContent: 'space-between',
               alignItems: 'center',
             }}>
             <View
               style={{
-                borderRadius: 100,
-                marginRight: 20,
-                padding: 4,
-                borderWidth: 1,
-                borderColor: COLOURS.backgroundMedium,
-                opacity: 0.5,
+                flexDirection: 'row',
+                alignItems: 'center',
               }}>
+              <TouchableOpacity
+                onPress={() => changeQte(data, -1)}
+                style={{
+                  borderRadius: 100,
+                  marginRight: 20,
+                  padding: 4,
+                  borderWidth: 1,
+                  borderColor: COLOURS.backgroundMedium,
+                  opacity: 0.5,
+                }}>
+                <MaterialCommunityIcons
+                  name="minus"
+                  style={{
+                    fontSize: 16,
+                    color: COLOURS.backgroundDark,
+                  }}
+                />
+              </TouchableOpacity>
+              <Text>{data.quantity}</Text>
+              <TouchableOpacity
+                onPress={() => changeQte(data, 1)}
+                style={{
+                  borderRadius: 100,
+                  marginLeft: 20,
+                  padding: 4,
+                  borderWidth: 1,
+                  borderColor: COLOURS.backgroundMedium,
+                  opacity: 0.5,
+                }}>
+                <MaterialCommunityIcons
+                  name="plus"
+                  style={{
+                    fontSize: 16,
+                    color: COLOURS.backgroundDark,
+                  }}
+                />
+              </TouchableOpacity>
+            </View>
+            <TouchableOpacity onPress={() => removeItemFromCart(data._id)}>
               <MaterialCommunityIcons
-                name="minus"
+                name="delete-outline"
                 style={{
                   fontSize: 16,
                   color: COLOURS.backgroundDark,
+                  backgroundColor: COLOURS.backgroundLight,
+                  padding: 8,
+                  borderRadius: 100,
                 }}
               />
-            </View>
-            <Text>1</Text>
-            <View
-              style={{
-                borderRadius: 100,
-                marginLeft: 20,
-                padding: 4,
-                borderWidth: 1,
-                borderColor: COLOURS.backgroundMedium,
-                opacity: 0.5,
-              }}>
-              <MaterialCommunityIcons
-                name="plus"
-                style={{
-                  fontSize: 16,
-                  color: COLOURS.backgroundDark,
-                }}
-              />
-            </View>
+            </TouchableOpacity>
           </View>
-          <TouchableOpacity onPress={() => removeItemFromCart(data.id)}>
-            <MaterialCommunityIcons
-              name="delete-outline"
-              style={{
-                fontSize: 16,
-                color: COLOURS.backgroundDark,
-                backgroundColor: COLOURS.backgroundLight,
-                padding: 8,
-                borderRadius: 100,
-              }}
-            />
-          </TouchableOpacity>
         </View>
       </View>
-    </TouchableOpacity>
-  );
-};
+    );
+  };
+ 
+  useEffect(() => {
+    getDataFromDB();  
+  },[]);
 
 
-  
-return (
+  return (
     <View
-    style={{
-      width: '100%',
-      height: '100%',
-      backgroundColor: COLOURS.white,
-    }}>
-    <ScrollView>
-      <View
       style={{
         width: '100%',
-        flexDirection: 'row',
-        paddingTop: 16,
-        paddingHorizontal: 16,
-        justifyContent: 'space-between',
-        alignItems: 'center',
+        height: '100%',
+        backgroundColor: COLOURS.white,
       }}>
-         <TouchableOpacity onPress={() => navigation.goBack()}>
+      <ScrollView>
+        <View
+          style={{
+            width: '100%',
+            flexDirection: 'row',
+            paddingTop: 16,
+            paddingHorizontal: 16,
+            justifyContent: 'space-between',
+            alignItems: 'center', 
+          }}>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
             <MaterialCommunityIcons
               name="chevron-left"
               style={{
@@ -253,17 +269,14 @@ return (
             }}>
             Orders details
           </Text>
-
           <View></View>
+        </View>
 
-     
-          </View>
-
-          <Text
+        <Text
           style={{
-            fontSize: 20,
+            fontSize: 22,
             color: COLOURS.black,
-            fontWeight: '500',
+            fontWeight: '400',
             letterSpacing: 1,
             paddingTop: 20,
             paddingLeft: 16,
@@ -272,21 +285,20 @@ return (
           My Cart
         </Text>
         <View style={{paddingHorizontal: 16}}>
-          {product ? product.map(renderProducts) : null}
+          {items ? items.map(renderProducts) : <Text style={{fontSize:18, textAlign: 'center',opacity: 0.5, padding:16}}>your cart is empty</Text>}
         </View>
 
         <View>
           <View
             style={{
               paddingHorizontal: 16,
-              marginVertical: 10,
+              marginVertical: 20,
             }}>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 22,
                 color: COLOURS.black,
-                fontWeight: '500',
-                letterSpacing: 1,
+                fontWeight: '400',
                 marginBottom: 20,
               }}>
               Delivery Location
@@ -310,21 +322,21 @@ return (
                     alignItems: 'center',
                     justifyContent: 'center',
                     padding: 12,
-                    borderRadius: 10,
-                    marginRight: 18,
+                    borderRadius: 100,
+                    marginRight: 10,
                   }}>
-                  <MaterialCommunityIcons
-                    name="truck-delivery-outline"
+                  <Entypo
+                    name="location-pin"
                     style={{
-                      fontSize: 18,
-                      color: COLOURS.blue,
+                      fontSize: 24,
+                      color: "black",
                     }}
                   />
                 </View>
                 <View>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       color: COLOURS.black,
                       fontWeight: '500',
                     }}>
@@ -332,7 +344,7 @@ return (
                   </Text>
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: 14,
                       color: COLOURS.black,
                       fontWeight: '400',
                       lineHeight: 20,
@@ -355,10 +367,9 @@ return (
             }}>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 22,
                 color: COLOURS.black,
-                fontWeight: '500',
-                letterSpacing: 1,
+                fontWeight: '400',
                 marginBottom: 20,
               }}>
               Payment Method
@@ -398,7 +409,7 @@ return (
                 <View>
                   <Text
                     style={{
-                      fontSize: 14,
+                      fontSize: 16,
                       color: COLOURS.black,
                       fontWeight: '500',
                     }}>
@@ -406,7 +417,7 @@ return (
                   </Text>
                   <Text
                     style={{
-                      fontSize: 12,
+                      fontSize: 14,
                       color: COLOURS.black,
                       fontWeight: '400',
                       lineHeight: 20,
@@ -430,10 +441,9 @@ return (
             }}>
             <Text
               style={{
-                fontSize: 16,
+                fontSize: 22,
                 color: COLOURS.black,
-                fontWeight: '500',
-                letterSpacing: 1,
+                fontWeight: '400',
                 marginBottom: 20,
               }}>
               Order Info
@@ -447,7 +457,7 @@ return (
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: '400',
                   maxWidth: '80%',
                   color: COLOURS.black,
@@ -457,12 +467,12 @@ return (
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: '400',
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                {total} TND
+                {subTotal} TND
               </Text>
             </View>
             <View
@@ -474,7 +484,7 @@ return (
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: '400',
                   maxWidth: '80%',
                   color: COLOURS.black,
@@ -484,12 +494,12 @@ return (
               </Text>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 16,
                   fontWeight: '400',
                   color: COLOURS.black,
                   opacity: 0.8,
                 }}>
-                &#8377;{total / 20}
+                {shippingTax} TND
               </Text>
             </View>
             <View
@@ -500,7 +510,7 @@ return (
               }}>
               <Text
                 style={{
-                  fontSize: 12,
+                  fontSize: 18,
                   fontWeight: '400',
                   maxWidth: '80%',
                   color: COLOURS.black,
@@ -514,13 +524,11 @@ return (
                   fontWeight: '500',
                   color: COLOURS.black,
                 }}>
-                {total + total / 20} TND
+                {total} TND
               </Text>
             </View>
           </View>
-        </View>
-
-        
+        </View>   
       </ScrollView>
       <View
         style={{
@@ -530,8 +538,7 @@ return (
           width: '100%',
           justifyContent: 'center',
           alignItems: 'center',
-      }}>
-      
+        }}>
         <TouchableOpacity
           onPress={() => (total != 0 ? checkOut() : null)}
           style={{
@@ -541,27 +548,27 @@ return (
             borderRadius: 20,
             justifyContent: 'center',
             alignItems: 'center',
-        }}>
-            <LinearGradient colors={["#f3607b", "#fc8783"]} style={{
+          }}>
+          <LinearGradient colors={["#f3607b", "#fc8783"]} style={{
             width: '86%',
             height: '90%',
             // backgroundColor: COLOURS.blue,
             borderRadius: 20,
             justifyContent: 'center',
             alignItems: 'center',
-        }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  fontWeight: '500',
-                  letterSpacing: 1,
-                  color: COLOURS.white,
-                  textTransform: 'uppercase',
-                }}>
-                CHECKOUT ({total + total / 20} TND)
-              </Text>
-            </LinearGradient>
-          </TouchableOpacity>
+            }}>
+            <Text
+              style={{
+                fontSize: 12,
+                fontWeight: '500',
+                letterSpacing: 1,
+                color: COLOURS.white,
+                textTransform: 'uppercase',
+              }}>
+              CHECKOUT ({total} TND)
+            </Text>
+          </LinearGradient>
+        </TouchableOpacity>
         
       </View>
     </View>

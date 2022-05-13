@@ -8,7 +8,6 @@ const {
 const router = require("express").Router();
 
 //CREATE
-
 router.post("/create", /*verifyTokenAndAdmin,*/ async (req, res) => {
   const newProduct = new Product(req.body);
 
@@ -46,6 +45,34 @@ router.delete("/delete/:id", verifyTokenAndAdmin, async (req, res) => {
   }
 });
 
+//Search products by words
+router.get("/searchProducts", async (req, res) => {
+  const word = req.query.word;
+  console.log(word);
+  Product.find({
+      $or: [
+        {
+          'productName': {$regex: word, $options: 'i'}
+        },
+        {
+          'description': { $regex: word, $options: 'i' }
+        },
+        {
+          'category': { $regex: word, $options: 'i' }
+        }
+      ]
+    },
+    function(err, model){
+      if (err){
+        console.log("ERROR: ", err);
+        res.status(500).json(err);
+      }else{
+        res.status(200).json(model);
+      }
+    }
+  );
+})
+
 //GET PRODUCT
 router.get("/find/:id", async (req, res) => {
   try {
@@ -67,7 +94,7 @@ router.get("/findAll", async (req, res) => {
       products = await Product.find().sort({ createdAt: -1 }).limit(1);
     } else if (qCategory) {
       products = await Product.find({
-        categories: {
+        category: {
           $in: [qCategory],
         },
       });

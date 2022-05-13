@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {
   View,
   Text,
-  StatusBar,
   ScrollView,
   TouchableOpacity,
   FlatList,
@@ -13,76 +12,32 @@ import {
 } from 'react-native';
 import {COLOURS, Items} from '../data/Data';
 import Entypo from 'react-native-vector-icons/Entypo';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+// import Ionicons from 'react-native-vector-icons/Ionicons';
 import { LinearGradient } from "expo-linear-gradient";
+import axios from 'axios';
 
 const ProductInfo = ({route, navigation}) => {
-  const {productID} = route.params;
+  const { productID } = route.params;
+  const [productItem, setItem] = useState([]);
 
-  const [product, setProduct] = useState({});
-
-  const width = Dimensions.get('window').width;
-
-  const scrollX = new Animated.Value(0);
-
-  let position = Animated.divide(scrollX, width);
-
-  useEffect(() => {
-    const unsubscribe = navigation.addListener('focus', () => {
-      getDataFromDB();
+  const getItem = () => {
+    axios.get(`http://192.168.1.14:9000/api/products/find/${productID}`).then((res) => {
+        if (res.status == 200) {
+            return setItem(res.data);
+        } else if (res.status == 403) {
+            return console.log("error" + res);
+        } else {
+            return console.log("error");
+        }
     });
-
-    return unsubscribe;
-  }, [navigation]);
-
-  //get product data by productID
-
-  const getDataFromDB = async () => {
-    for (let index = 0; index < Items.length; index++) {
-      if (Items[index].id == productID) {
-        await setProduct(Items[index]);
-        return;
-      }
-    }
   };
 
-  //add to cart
+  
+  const width = Dimensions.get('window').width;
+  const scrollX = new Animated.Value(0);
+  let position = Animated.divide(scrollX, width);  
 
-  const addToCart = async id => {
-    let itemArray = await AsyncStorage.getItem('cartItems');
-    itemArray = JSON.parse(itemArray);
-    if (itemArray) {
-      let array = itemArray;
-      array.push(id);
-
-      try {
-        await AsyncStorage.setItem('cartItems', JSON.stringify(array));
-        ToastAndroid.show(
-          'Item Added Successfully to cart',
-          ToastAndroid.SHORT,
-        );
-        navigation.navigate('Home');
-      } catch (error) {
-        return error;
-      }
-    } else {
-      let array = [];
-      array.push(id);
-      try {
-        await AsyncStorage.setItem('cartItems', JSON.stringify(array));
-        ToastAndroid.show(
-          'Item Added Successfully to cart',
-          ToastAndroid.SHORT,
-        );
-        navigation.navigate('Home');
-      } catch (error) {
-        return error;
-      }
-    }
-  };
-
-  //product horizontal scroll product card
+  //product image horizontal scroll
   const renderProduct = ({item, index}) => {
     return (
       <View
@@ -104,6 +59,35 @@ const ProductInfo = ({route, navigation}) => {
       </View>
     );
   };
+
+  //add to cart
+  const addToCart = async (userId, productId) => {
+    axios.post(
+      `http://192.168.1.14:9000/api/carts/createUpdate/${userId}`,
+      {
+        productId: productId,
+        productName: productItem.productName,
+        productPrice: productItem.productPrice,
+        productImage: productItem.productImage,
+        quantity: 1,
+        qteAction: 1,
+      }
+    ).then(function (res) {
+      if (res.status == 200) {
+        ToastAndroid.show('Item Added Successfully to cart', ToastAndroid.SHORT);
+        navigation.navigate('CartScreen');
+      } else {
+        return console.log("error" + res);
+      }
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  };
+
+  useEffect(() => {
+    getItem();
+  }, [])
 
   return (
     <View
@@ -146,9 +130,10 @@ const ProductInfo = ({route, navigation}) => {
             </TouchableOpacity>
           </View>
           <FlatList
-            data={product.productImageList ? product.productImageList : null}
+            data={productItem.productImageList ? productItem.productImageList : null}
             horizontal
             renderItem={renderProduct}
+            keyExtractor={(productItem, index) => index.toString()}
             showsHorizontalScrollIndicator={false}
             decelerationRate={0.8}
             snapToInterval={width}
@@ -167,8 +152,8 @@ const ProductInfo = ({route, navigation}) => {
               marginBottom: 16,
               marginTop: 32,
             }}>
-            {product.productImageList
-              ? product.productImageList.map((data, index) => {
+            {productItem.productImageList
+              ? productItem.productImageList.map((data, index) => {
                   let opacity = position.interpolate({
                     inputRange: [index - 1, index, index + 1],
                     outputRange: [0.2, 1, 0.2],
@@ -226,7 +211,7 @@ const ProductInfo = ({route, navigation}) => {
               color: COLOURS.black,
               maxWidth: '84%',
             }}>
-            {product.productName}
+            {productItem.productName}
           </Text>
           <Text
             style={{
@@ -239,7 +224,7 @@ const ProductInfo = ({route, navigation}) => {
               maxHeight: 200,
               marginVertical: 16,
             }}>
-            {product.description}
+            {productItem.description}
           </Text>
           <View
             style={{
@@ -270,7 +255,7 @@ const ProductInfo = ({route, navigation}) => {
                 <Entypo
                   name="location-pin"
                   style={{
-                    fontSize: 16,
+                    fontSize: 24,
                     color: "black",
                   }}
                 />
@@ -297,11 +282,11 @@ const ProductInfo = ({route, navigation}) => {
                 color: COLOURS.black,
                 marginBottom: 4,
               }}>
-              {product.productPrice} TND
+              {productItem.productPrice} TND
             </Text>
             <Text>
-              Tax Rate 2% ~ {product.productPrice / 20} TND
-              &nbsp;({product.productPrice + product.productPrice / 20} TND)
+              Tax Rate 2% ~ {productItem.productPrice / 20} TND
+              &nbsp;({productItem.productPrice + productItem.productPrice / 20} TND)
             </Text>
           </View>
         </View>
@@ -317,7 +302,7 @@ const ProductInfo = ({route, navigation}) => {
           alignItems: 'center',
         }}>
         <TouchableOpacity
-          onPress={() => (product.isAvailable ? addToCart(product.id) : null)}
+          onPress={() => (productItem.isAvailable ? addToCart("6256f385041ec88105adc2fb",productItem._id) : null)}
           style={{
             width: '86%',
             height: '90%',
@@ -326,7 +311,7 @@ const ProductInfo = ({route, navigation}) => {
             alignItems: 'center',
           }}>
           <LinearGradient
-            colors={["#f3607b", "#fc8783"]}
+            colors={productItem.isAvailable ? ["#f3607b", "#fc8783"] : ["#c2c2c2", "#c2c2c2"]}
             style={{
               width: "100%",
               height: "100%",
@@ -343,7 +328,7 @@ const ProductInfo = ({route, navigation}) => {
                 color: COLOURS.white,
                 textTransform: 'uppercase',
               }}>
-              {product.isAvailable ? 'Add to cart' : 'Not Avialable'}
+              {productItem.isAvailable ? 'Add to cart' : '🚫 Not Avialable'}
             </Text>
           </LinearGradient>
         </TouchableOpacity>
