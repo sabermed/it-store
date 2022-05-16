@@ -20,7 +20,7 @@ router.post("/create", /*verifyTokenAndAdmin,*/ async (req, res) => {
 });
 
 //UPDATE
-router.put("/update/:id", verifyTokenAndAdmin, async (req, res) => {
+router.put("/update/:id", /*verifyTokenAndAdmin,*/ async (req, res) => {
   try {
     const updatedProduct = await Product.findByIdAndUpdate(
       req.params.id,
@@ -36,7 +36,7 @@ router.put("/update/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //DELETE
-router.delete("/delete/:id", verifyTokenAndAdmin, async (req, res) => {
+router.delete("/delete/:id", /*verifyTokenAndAdmin,*/ async (req, res) => {
   try {
     await Product.findByIdAndDelete(req.params.id);
     res.status(200).json("Product has been deleted...");
@@ -84,7 +84,7 @@ router.get("/find/:id", async (req, res) => {
 });
 
 //GET ALL PRODUCTS
-router.get("/findAll", async (req, res) => {
+router.get("/findAll", /*verifyTokenAndAdmin,*/ async (req, res) => {
   const qNew = req.query.new;
   const qCategory = req.query.category;
   try {

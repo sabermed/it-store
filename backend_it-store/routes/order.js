@@ -21,7 +21,7 @@ router.post("/create", /*verifyToken,*/ async (req, res) => {
 });
 
 //UPDATE
-router.put("/update/:id", verifyTokenAndAdmin, async (req, res) => {
+router.put("/update/:id", /*verifyTokenAndAdmin,*/ async (req, res) => {
   try {
     const updatedOrder = await Order.findByIdAndUpdate(
       req.params.id,
@@ -37,7 +37,7 @@ router.put("/update/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //DELETE
-router.delete("/delete/:id", verifyTokenAndAdmin, async (req, res) => {
+router.delete("/delete/:id", /*verifyTokenAndAdmin,*/ async (req, res) => {
   try {
     await Order.findByIdAndDelete(req.params.id);
     res.status(200).json("Order has been deleted...");
@@ -47,7 +47,7 @@ router.delete("/delete/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET USER ORDERS
-router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.get("/find/:id", /*verifyTokenAndAuthorization,*/ async (req, res) => {
   try {
     const orders = await Order.find({ userId: req.params.id });
     res.status(200).json(orders);
@@ -58,7 +58,7 @@ router.get("/find/:id", verifyTokenAndAuthorization, async (req, res) => {
 
 // //GET ALL
 
-router.get("/findAll", verifyTokenAndAdmin, async (req, res) => {
+router.get("/findAll", /*verifyTokenAndAdmin,*/ async (req, res) => {
   try {
     const orders = await Order.find();
     res.status(200).json(orders);
@@ -69,7 +69,7 @@ router.get("/findAll", verifyTokenAndAdmin, async (req, res) => {
 
 // GET MONTHLY INCOME
 
-router.get("/income", verifyTokenAndAdmin, async (req, res) => {
+router.get("/income", /*verifyTokenAndAdmin,*/ async (req, res) => {
   const date = new Date();
   const lastMonth = new Date(date.setMonth(date.getMonth() - 1));
   const previousMonth = new Date(new Date().setMonth(lastMonth.getMonth() - 1));

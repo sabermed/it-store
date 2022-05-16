@@ -1,4 +1,4 @@
-import React, {useContext, useState} from 'react';
+import React, { useContext, useState } from "react";
 import {
   View,
   Text,
@@ -7,18 +7,17 @@ import {
   Image,
   Platform,
   StyleSheet,
-  ScrollView
-} from 'react-native';
-import FormInput from '../components/FormInput';
+  ScrollView,
+} from "react-native";
+import FormInput from "../components/FormInput";
 import { LinearGradient } from "expo-linear-gradient";
-import SocialButton from '../components/SocialButton';
-import itStore from '../assets/it-store.png';
-import axios from 'axios';
-import * as SecureStore from 'expo-secure-store';
+import SocialButton from "../components/SocialButton";
+import itStore from "../assets/it-store.png";
+import axios from "axios";
+import * as SecureStore from "expo-secure-store";
 // import {AuthContext} from '../navigation/AuthProvider';
 
 const LoginScreen = ({ navigation }) => {
-  
   const [data, setData] = useState({
     email: "",
     password: "",
@@ -37,39 +36,45 @@ const LoginScreen = ({ navigation }) => {
       password: val,
     });
   };
- 
-  const loginHandle =  async () => {
-    const res = await axios.post("http://192.168.1.14:9000/api/auth/login", {
-      email: data.email,
-      password: data.password,
-    })
-    
-    if (res.status == 200 && res.data.accessToken != "") {
-      await SecureStore.setItemAsync('userToken', res.data.accessToken);
-      await SecureStore.setItemAsync('username', res.data.username);
-      let result = await SecureStore.getItemAsync('userToken');
-      let result2 = await SecureStore.getItemAsync('username');
-      console.log(result,result2)
-      navigation.navigate("Home")
-      
-    } else if(res.status == 403){
-      console.log(res.data.msg)
-    } else if (res.status == 401) {
-      console.log(res.data.msg)
-    } else {
-      console.log("error")
-    }
-      
-  };
 
+  const loginHandle = async () => {
+    if (data.email != "" && data.password != "") {
+      axios
+        .post("http://192.168.1.14:9000/api/auth/login", {
+          email: data.email,
+          password: data.password,
+        })
+        .then(function (res) {
+          if (res.status == 200 && res.data.accessToken != "") {
+            SecureStore.setItemAsync("userToken", res.data.accessToken).then(
+              () =>
+                SecureStore.setItemAsync("userId", res.data._id).then(() => {
+                  SecureStore.setItemAsync("username", res.data.username).then(
+                    () => {
+                      navigation.reset({
+                        index: 1,
+                        routes: [{ name: "BottomNavigationBar" }],
+                      });
+                    }
+                  );
+                })
+            );
+          } else {
+            console.log(res.data.msg);
+          }
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    } else {
+      console.log("no data");
+    }
+  };
 
   return (
     <ScrollView contentContainerStyle={styles.container}>
-      <Image
-        source={ itStore }
-        style={styles.logo}
-      />
-      <Text style={styles.text}>               </Text>
+      <Image source={itStore} style={styles.logo} />
+      <Text style={styles.text}> </Text>
 
       <FormInput
         onChangeText={(val) => textInputChange(val)}
@@ -93,10 +98,7 @@ const LoginScreen = ({ navigation }) => {
           loginHandle();
         }}
       >
-        <LinearGradient
-          colors={["#f3607b", "#fc8783"]}
-          style={styles.signIn}
-        >
+        <LinearGradient colors={["#f3607b", "#fc8783"]} style={styles.signIn}>
           <Text
             style={[
               styles.textSign,
@@ -109,13 +111,14 @@ const LoginScreen = ({ navigation }) => {
           </Text>
         </LinearGradient>
       </TouchableOpacity>
-      
 
       <Pressable style={styles.forgotButton} onPress={() => {}}>
-        <Text style={[styles.navButtonText, {color: "#000"}]}>Forgot Password?</Text>
+        <Text style={[styles.navButtonText, { color: "#000" }]}>
+          Forgot Password?
+        </Text>
       </Pressable>
 
-      {Platform.OS === 'android' ? (
+      {Platform.OS === "android" ? (
         <View>
           <SocialButton
             buttonTitle="Sign In with Facebook"
@@ -135,13 +138,11 @@ const LoginScreen = ({ navigation }) => {
         </View>
       ) : null}
 
-      <View style={[{flexDirection:'row'},styles.forgotButton]}>
-        <Text style={styles.navButtonText}>
-          Don't have an acount?&nbsp;
-        </Text>
+      <View style={[{ flexDirection: "row" }, styles.forgotButton]}>
+        <Text style={styles.navButtonText}>Don't have an acount?&nbsp;</Text>
         <Text
-          style={[styles.navButtonText,{color: "#f3607b"}]}
-          onPress={() => navigation.navigate('SignupScreen')}
+          style={[styles.navButtonText, { color: "#f3607b" }]}
+          onPress={() => navigation.navigate("SignupScreen")}
         >
           Create here
         </Text>
@@ -155,21 +156,21 @@ export default LoginScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
     paddingTop: 50,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   logo: {
     height: 150,
     width: 150,
-    resizeMode: 'cover',
+    resizeMode: "cover",
   },
   text: {
     fontSize: 28,
     marginBottom: 10,
-    color: '#051d5f',
+    color: "#051d5f",
   },
   navButton: {
     marginTop: 15,
@@ -179,8 +180,8 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontSize: 18,
-    fontWeight: '500',
-    color: '#000',
+    fontWeight: "500",
+    color: "#000",
   },
   signIn: {
     width: "100%",
