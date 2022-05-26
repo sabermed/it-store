@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
+import { useFocusEffect } from "@react-navigation/native";
 import {
   View,
   Text,
@@ -7,6 +8,8 @@ import {
   Image,
   ToastAndroid,
 } from "react-native";
+import { useIsFocused } from "@react-navigation/native";
+
 import Entypo from "react-native-vector-icons/Entypo";
 import MaterialCommunityIcons from "react-native-vector-icons/MaterialCommunityIcons";
 import { LinearGradient } from "expo-linear-gradient";
@@ -21,6 +24,8 @@ export default function CartScreen({ navigation }) {
   const [userId, setUserId] = useState("");
   const shippingTax = 10.0;
 
+  const isFocused = useIsFocused();
+
   //getting user id from async storage
   const getUser = async () => {
     SecureStore.getItemAsync("userId").then((res) => {
@@ -30,28 +35,28 @@ export default function CartScreen({ navigation }) {
   };
 
   //get data from local DB by ID
-  const getDataFromDB = async () => {
-    getUser().then(() => {
-      axios
-        .get(`http://192.168.1.14:9000/api/carts/find/${userId}`)
-        .then(function (res) {
-          let dt = [];
-          if (res.status == 200) {
-            res.data.map((item, index) => {
-              item.products.map((elem, i) => {
-                dt.push(elem);
-              });
+  const getDataFromDB = async (userid) => {
+    console.log(`http://192.168.43.228:9000/api/carts/find/${userid}`);
+    axios
+      .get(`http://192.168.43.228:9000/api/carts/find/${userid}`)
+      .then(function (res) {
+        console.log(res.data);
+        let dt = [];
+        if (res.status == 200) {
+          res.data.map((item, index) => {
+            item.products.map((elem, i) => {
+              dt.push(elem);
             });
-            setItems(dt);
-            getTotal(dt);
-          } else {
-            return console.log("error" + res);
-          }
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-    });
+          });
+          setItems(dt);
+          getTotal(dt);
+        } else {
+          return console.log("error" + res);
+        }
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   //get total price of all items in the cart
@@ -71,13 +76,13 @@ export default function CartScreen({ navigation }) {
       navigation.navigate("LoginScreen");
     } else {
       axios
-        .post(`http://192.168.1.14:9000/api/carts/createUpdate/${userId}`, {
+        .post(`http://192.168.43.228:9000/api/carts/createUpdate/${userId}`, {
           productId: data.productId,
           qteAction: qteAction,
         })
         .then(function (res) {
           if (res.status == 200) {
-            getDataFromDB();
+            getDataFromDB(userId);
           } else {
             return console.log("error" + res);
           }
@@ -94,12 +99,12 @@ export default function CartScreen({ navigation }) {
       navigation.navigate("LoginScreen");
     } else {
       axios
-        .post(`http://192.168.1.14:9000/api/carts/delete/${userId}`, {
+        .post(`http://192.168.43.228:9000/api/carts/delete/${userId}`, {
           productId: id,
         })
         .then(function (res) {
           if (res.status == 200) {
-            getDataFromDB();
+            getDataFromDB(userId);
           } else {
             return console.log("error" + res);
           }
@@ -269,7 +274,10 @@ export default function CartScreen({ navigation }) {
   };
 
   useEffect(() => {
-    getDataFromDB();
+    SecureStore.getItemAsync("userId").then((res) => {
+      setUserId(res);
+      getDataFromDB(res);
+    });
   }, []);
 
   return (

@@ -66,7 +66,7 @@ export default function ProfileScreen({ navigation }) {
               }}
             >
               <Text style={{ fontSize: 22, fontWeight: "700" }}>Welcome</Text>
-              <Text style={{ fontSize: 12, fontWeight: "400" }}>
+              <Text style={{ fontSize: 16, fontWeight: "400" }}>
                 {user == "" ? "Sign In to your account" : user}
               </Text>
             </View>
@@ -119,7 +119,7 @@ export default function ProfileScreen({ navigation }) {
                     paddingHorizontal: 50,
                     justifyContent: "center",
                     alignItems: "center",
-                    backgroundColor: "#fff",
+                    backgroundColor: "#e2e2e2",
                     borderRadius: 50,
                   }}
                 >

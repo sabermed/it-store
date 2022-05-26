@@ -31,7 +31,7 @@ const ProductInfo = ({ route, navigation }) => {
   const getItem = () => {
     getUser().then(() => {
       axios
-        .get(`http://192.168.1.14:9000/api/products/find/${productID}`)
+        .get(`http://192.168.43.228:9000/api/products/find/${productID}`)
         .then((res) => {
           if (res.status == 200) {
             return setItem(res.data);
@@ -78,7 +78,7 @@ const ProductInfo = ({ route, navigation }) => {
       navigation.navigate("LoginScreen");
     } else {
       axios
-        .post(`http://192.168.1.14:9000/api/carts/createUpdate/${userId}`, {
+        .post(`http://192.168.43.228:9000/api/carts/createUpdate/${userId}`, {
           productId: productID,
           productName: productItem.productName,
           productPrice: productItem.productPrice,

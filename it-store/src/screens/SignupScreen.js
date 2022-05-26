@@ -1,11 +1,18 @@
-import React, {useContext, useState} from 'react';
-import {View, Text, TouchableOpacity, Platform, StyleSheet} from 'react-native';
-import FormInput from '../components/FormInput';
-import SocialButton from '../components/SocialButton';
+import React, { useContext, useState } from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Platform,
+  StyleSheet,
+  ToastAndroid,
+} from "react-native";
+import FormInput from "../components/FormInput";
+import SocialButton from "../components/SocialButton";
 import { LinearGradient } from "expo-linear-gradient";
-import axios from 'axios';
+import axios from "axios";
 
-const SignupScreen = ({navigation}) => {
+const SignupScreen = ({ navigation }) => {
   const [passwordmatch, setPasswordmatch] = useState(true);
   const [data, setData] = useState({
     username: "",
@@ -17,24 +24,30 @@ const SignupScreen = ({navigation}) => {
   });
 
   const Signupfunction = () => {
-    if(data.check_emailInputChange==true&&data.check_textInputChange==true&&passwordmatch==true){
-      axios.post("http://192.168.1.14:9000/api/auth/register", {
-        username: data.username,
-        email: data.email,
-        password: data.password
-      }).then((res) => {
-        if(res.status==200){
-            navigation.navigate("LoginScreen")
-        }else if(res.status==403){
-            console.log(res.data.msg)
-        }else {
-          console.log("error")
-        }
-      })
+    if (
+      data.check_emailInputChange == true &&
+      data.check_textInputChange == true &&
+      passwordmatch == true
+    ) {
+      axios
+        .post("http://192.168.43.228:9000/api/auth/register", {
+          username: data.username,
+          email: data.email,
+          password: data.password,
+        })
+        .then((res) => {
+          if (res.status == 200) {
+            navigation.navigate("LoginScreen");
+          } else if (res.status == 403) {
+            console.log(res.data.msg);
+          } else {
+            console.log("error");
+          }
+        });
     } else {
-      alert("please verify all fields")
+      ToastAndroid.show("please enter correct input", ToastAndroid.SHORT);
     }
-  }
+  };
 
   const textInputChange = (val) => {
     if (val.length !== 0) {
@@ -82,7 +95,6 @@ const SignupScreen = ({navigation}) => {
       confirm_password: val,
     });
     checkpasswordmatch(val);
-
   };
 
   const checkpasswordmatch = (val) => {
@@ -91,7 +103,7 @@ const SignupScreen = ({navigation}) => {
       setPasswordmatch(true);
     } else {
       console.log("no match");
-     setPasswordmatch(false);
+      setPasswordmatch(false);
     }
   };
 
@@ -124,9 +136,7 @@ const SignupScreen = ({navigation}) => {
       />
 
       {passwordmatch == false ? (
-        <Text style={{ color: "red", margin: 0 }}>
-          password does not match
-        </Text>
+        <Text style={{ color: "red", margin: 0 }}>password does not match</Text>
       ) : null}
 
       <FormInput
@@ -142,10 +152,7 @@ const SignupScreen = ({navigation}) => {
           Signupfunction();
         }}
       >
-        <LinearGradient
-          colors={["#f3607b", "#fc8783"]}
-          style={styles.signUp}
-        >
+        <LinearGradient colors={["#f3607b", "#fc8783"]} style={styles.signUp}>
           <Text
             style={[
               styles.textSign,
@@ -161,20 +168,20 @@ const SignupScreen = ({navigation}) => {
 
       <View style={styles.textPrivate}>
         <Text style={styles.color_textPrivate}>
-          By registering, you confirm that you accept our{' '}
+          By registering, you confirm that you accept our{" "}
         </Text>
-        <TouchableOpacity onPress={() => alert('Terms Clicked!')}>
-          <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+        <TouchableOpacity onPress={() => alert("Terms Clicked!")}>
+          <Text style={[styles.color_textPrivate, { color: "#e88832" }]}>
             Terms of service
           </Text>
         </TouchableOpacity>
         <Text style={styles.color_textPrivate}> and </Text>
-        <Text style={[styles.color_textPrivate, {color: '#e88832'}]}>
+        <Text style={[styles.color_textPrivate, { color: "#e88832" }]}>
           Privacy Policy
         </Text>
       </View>
 
-      {Platform.OS === 'android' ? (
+      {Platform.OS === "android" ? (
         <View>
           <SocialButton
             buttonTitle="Sign Up with Facebook"
@@ -183,7 +190,7 @@ const SignupScreen = ({navigation}) => {
             backgroundColor="#e6eaf4"
             onPress={() => {}}
           />
-    
+
           <SocialButton
             buttonTitle="Sign Up with Google"
             btnType="google"
@@ -194,17 +201,15 @@ const SignupScreen = ({navigation}) => {
         </View>
       ) : null}
 
-      <View style={[{flexDirection:'row'},styles.forgotButton]}>
-          <Text style={styles.navButtonText}>
-            Have an acount?&nbsp;
-          </Text>
-          <Text
-            style={[styles.navButtonText,{color: "#f3607b"}]}
-            onPress={() => navigation.navigate('LoginScreen')}
-          >
-            Sign In
-          </Text>
-        </View>
+      <View style={[{ flexDirection: "row" }, styles.forgotButton]}>
+        <Text style={styles.navButtonText}>Have an acount?&nbsp;</Text>
+        <Text
+          style={[styles.navButtonText, { color: "#f3607b" }]}
+          onPress={() => navigation.navigate("LoginScreen")}
+        >
+          Sign In
+        </Text>
+      </View>
     </View>
   );
 };
@@ -213,16 +218,16 @@ export default SignupScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     padding: 20,
   },
   text: {
     fontSize: 28,
     marginBottom: 10,
-    color: '#051d5f',
+    color: "#051d5f",
   },
   navButton: {
     marginTop: 15,
@@ -232,19 +237,19 @@ const styles = StyleSheet.create({
   },
   navButtonText: {
     fontSize: 18,
-    fontWeight: '500',
-    color: '#000000',
+    fontWeight: "500",
+    color: "#000000",
   },
   textPrivate: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
     marginVertical: 16,
-    justifyContent: 'center',
+    justifyContent: "center",
   },
   color_textPrivate: {
     fontSize: 13,
-    fontWeight: '400',
-    color: 'grey',
+    fontWeight: "400",
+    color: "grey",
   },
   signUp: {
     width: "100%",

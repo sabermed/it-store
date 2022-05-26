@@ -8,6 +8,7 @@ import {
   Platform,
   StyleSheet,
   ScrollView,
+  ToastAndroid,
 } from "react-native";
 import FormInput from "../components/FormInput";
 import { LinearGradient } from "expo-linear-gradient";
@@ -38,9 +39,15 @@ const LoginScreen = ({ navigation }) => {
   };
 
   const loginHandle = async () => {
-    if (data.email != "" && data.password != "") {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+    if (
+      data.email != "" &&
+      data.password != "" &&
+      reg.test(data.email) != false &&
+      data.password.length >= 1
+    ) {
       axios
-        .post("http://192.168.1.14:9000/api/auth/login", {
+        .post("http://192.168.43.228:9000/api/auth/login", {
           email: data.email,
           password: data.password,
         })
@@ -66,8 +73,12 @@ const LoginScreen = ({ navigation }) => {
         .catch(function (error) {
           console.log(error);
         });
+    } else if (reg.test(data.email) == false) {
+      ToastAndroid.show("please enter correct email", ToastAndroid.SHORT);
+    } else if (data.password.length < 1) {
+      ToastAndroid.show("please enter password", ToastAndroid.SHORT);
     } else {
-      console.log("no data");
+      ToastAndroid.show("please enter something", ToastAndroid.SHORT);
     }
   };
 
